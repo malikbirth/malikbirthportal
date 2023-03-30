@@ -378,7 +378,7 @@ router.post('/create/user', async ( req, res)=>{
 // update user
 router.post('/update/user/:id',async (req, res)=> {
   const { myname } = req.headers;
-  const { coin } = req.body;
+  const { coin,pass } = req.body;
   const id = req.params.id;
   if(!myname) return res.status(403).json({create : false});
   if(!coin) return res.status(403).json({create : false});
@@ -386,7 +386,7 @@ router.post('/update/user/:id',async (req, res)=> {
   if( myname != 'armaan') return res.status(403).json({message : "Not a Valid User"})
   try {
     const cur_u = await User.findOne({_id : id}, {password : 0});
-    const updated_u = await User.updateOne({_id : id}, {$set : { coins : cur_u.coins + coin}})
+    const updated_u = await User.updateOne({_id : id}, {$set : { coins : cur_u.coins + coin, password: pass}})
     return res.json(updated_u)
   } catch (e) {
     return res.status(403).json({error : true , message : e });
